@@ -13,18 +13,16 @@ import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.User
 import com.example.roomdatabase.repository.UserRepository
 import com.example.roomdatabase.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 // MainActivity.kt
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var selectedUser: User? = null
 
     // Sử dụng delegate by viewModels()
-    private val viewModel: UserViewModel by viewModels {
-        UserViewModel.Factory(
-            UserRepository(AppDatabase.getDatabase(this).userDao())
-        )
-    }
+    private val viewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

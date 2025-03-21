@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.roomdatabase.model.User
 import com.example.roomdatabase.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // UserViewModel.kt
-class UserViewModel(private val repository: UserRepository) : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
 
     val allUsers: LiveData<List<User>> = repository.allUsers
 
@@ -24,15 +27,5 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun delete(user: User) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(user)
-    }
-
-    class Factory(private val repository: UserRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return UserViewModel(repository) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
     }
 }
